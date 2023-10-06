@@ -11,7 +11,6 @@ export enum HttpMethods {
   PUT = "PUT",
   PATCH = "PATCH",
 }
-export abstract class RestApiGateway {}
 
 export class RestApiTrigger {
   public path: string;

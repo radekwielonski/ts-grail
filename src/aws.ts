@@ -4,7 +4,7 @@ import {
   aws_lambda as lambda,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { RestApiGateway, RestApiTrigger, ServerlessFunction } from "./ts-grail";
+import { RestApiTrigger, ServerlessFunction } from "./ts-grail";
 
 let awsRestApiSingleton: AwsRestApiGateway;
 
@@ -20,10 +20,9 @@ export class AwsRestApiFactory {
   }
 }
 
-export class AwsRestApiGateway extends RestApiGateway {
+export class AwsRestApiGateway {
   awsRestApiGatewayConstruct: AwsRestApiGatewayConstruct;
   constructor(scope: Construct, id: string) {
-    super();
     this.awsRestApiGatewayConstruct = new AwsRestApiGatewayConstruct(
       scope,
       `${id}-api`
