@@ -1,4 +1,4 @@
-# Welcome to your ts-grail
+# Welcome to TS Grail
 
 TS Grail is micro framework invented for building simple serverless applications fast.
 
