@@ -16,6 +16,9 @@ class GetProducts extends ServerlessFunction {
   // Specyfing the type of trigger and it's properties
   trigger = new RestApiTrigger("/products", HttpMethods.GET);
 
+  // environment variables
+  environment = { key: "value" };
+
   // Defining the logic
   handler = async (
     event: APIGatewayProxyEvent

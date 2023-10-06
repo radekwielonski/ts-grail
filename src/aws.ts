@@ -85,6 +85,13 @@ class LambdaHandler extends Construct {
         handler: "index.handler",
       }
     );
+    if (serverlessFunction.environment) {
+      for (const [key, value] of Object.entries(
+        serverlessFunction.environment
+      )) {
+        this.handler.addEnvironment(key, value);
+      }
+    }
     if (serverlessFunction.trigger) {
       if (serverlessFunction.trigger instanceof RestApiTrigger) {
         const restApi = AwsRestApiFactory.getAwsInstance(scope, id);

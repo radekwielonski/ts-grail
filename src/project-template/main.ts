@@ -8,7 +8,13 @@ import {
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 class GetProducts extends ServerlessFunction {
+  // Specyfing the type of trigger and it's properties
   trigger = new RestApiTrigger("/products", HttpMethods.GET);
+
+  // environment variables
+  environment = { key: "value" };
+
+  // Defining the logic
   handler = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -22,6 +28,8 @@ class GetProducts extends ServerlessFunction {
   };
 }
 
+// gathering all resources
 export const resources = [new GetProducts()];
 
+// Creation of the stack
 new GrailStack("GrailStack", CloudProviders.AWS, resources, {});
