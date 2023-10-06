@@ -1,1 +1,7 @@
-export { GrailStack, RestApiTrigger, ServerlessFunction } from "./ts-grail";
+export {
+  GrailStack,
+  RestApiTrigger,
+  ServerlessFunction,
+  CloudProviders,
+  HttpMethods,
+} from "./ts-grail";
