@@ -17,7 +17,7 @@ if (process.argv[2] === "--init") {
   );
   fs.writeFileSync("tsconfig.json", templateTsConfig);
   const templateMain = fs.readFileSync(
-    path.join(__dirname, "./project-template/main.txt"),
+    path.join(__dirname, "./project-template/main.ts"),
     "utf-8"
   );
   fs.writeFileSync("main.ts", templateMain);
