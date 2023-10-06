@@ -8,7 +8,7 @@ import {
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 class GetProducts extends ServerlessFunction {
-  trigger = new RestApiTrigger("/some-endpoint", HttpMethods.GET);
+  trigger = new RestApiTrigger("/products", HttpMethods.GET);
   handler = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {

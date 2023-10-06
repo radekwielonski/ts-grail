@@ -9,12 +9,12 @@ The purpose of this package is to also be able develop apps locally without need
 
 ### Overview
 
-I wanted to make sure there will be as little of boilerblate as possible so I came up with that solution:
+I wanted to make sure there will be as little of boilerplate as possible so I came up with that solution:
 
 ```ts
 class GetProducts extends ServerlessFunction {
   // Specyfing the type of trigger and it's properties
-  trigger = new RestApiTrigger("/some-endpoint", HttpMethods.GET);
+  trigger = new RestApiTrigger("/products", HttpMethods.GET);
 
   // Defining the logic
   handler = async (
