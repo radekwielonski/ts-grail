@@ -1,138 +1,43 @@
-import * as cdk from "aws-cdk-lib";
-import {
-  aws_apigateway as apiGateway,
-  aws_lambda as lambda,
-} from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { AwsGrailStack } from "./aws";
 
-let awsRestApiSingleton: AwsRestApiGateway;
-
-export class RestApiFactory {
-  public static getAwsInstance(
-    scope: Construct,
-    id: string
-  ): AwsRestApiGateway {
-    if (!awsRestApiSingleton) {
-      awsRestApiSingleton = new AwsRestApiGateway(scope, id);
-    }
-    return awsRestApiSingleton;
-  }
+export enum CloudProviders {
+  AWS = "aws",
 }
 
+export enum HttpMethods {
+  GET = "GET",
+  POST = "POST",
+  DELETE = "DELETE",
+  PUT = "PUT",
+  PATCH = "PATCH",
+}
 export abstract class RestApiGateway {}
 
-export class AwsRestApiGatewayConstruct extends Construct {
-  public readonly gateway: apiGateway.LambdaRestApi;
-
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-    this.gateway = new apiGateway.RestApi(this, `${id}-restApi`);
-  }
-
-  public createResourcesFor(path: string) {
-    const pathParts = path.split("/");
-    if (pathParts[0] === "") {
-      pathParts.shift();
-    }
-    return this.createResource(pathParts, 0, this.gateway.root);
-  }
-
-  private createResource(
-    pathParts: string[],
-    index: number,
-    resource: apiGateway.IResource
-  ): apiGateway.IResource {
-    const pathPart = pathParts[index];
-
-    const existingResource = resource.getResource(pathPart);
-    const resultingResource = existingResource
-      ? existingResource
-      : resource.addResource(pathPart);
-
-    if (index !== pathParts.length - 1) {
-      return this.createResource(pathParts, index + 1, resultingResource);
-    }
-
-    return resultingResource;
-  }
-}
-
-export class AwsRestApiGateway extends RestApiGateway {
-  awsRestApiGatewayConstruct: AwsRestApiGatewayConstruct;
-  constructor(scope: Construct, id: string) {
-    super();
-    this.awsRestApiGatewayConstruct = new AwsRestApiGatewayConstruct(
-      scope,
-      `${id}-api`
-    );
-  }
-}
 export class RestApiTrigger {
   public path: string;
-  public method: string;
-  constructor(path: string, method: string) {
+  public method: HttpMethods;
+  constructor(path: string, method: HttpMethods) {
     this.path = path;
     this.method = method;
   }
 }
 
 export abstract class ServerlessFunction {
-  abstract trigger: any;
+  abstract trigger: RestApiTrigger; // To be extended by other services
   abstract handler: Function;
 }
 
-class LambdaHandler extends Construct {
-  public readonly handler: lambda.Function;
+export class GrailStack {
   constructor(
-    scope: Construct,
-    id: string,
-    serverlessFunction: ServerlessFunction
+    stackName: string,
+    cloudProvider: CloudProviders,
+    resources: ServerlessFunction[], // To be extended by other services
+    props: object
   ) {
-    super(scope, `${id}-${serverlessFunction.constructor.name}`);
-    this.handler = new lambda.Function(
-      this,
-      `${id}-${serverlessFunction.constructor.name}`,
-      {
-        functionName: `${id}-${serverlessFunction.constructor.name}`,
-        runtime: lambda.Runtime.NODEJS_18_X,
-        code: lambda.Code.fromInline(
-          `exports.handler = ${serverlessFunction.handler.toString()}`
-        ),
-        handler: "index.handler",
-      }
-    );
-    if (serverlessFunction.trigger) {
-      if (serverlessFunction.trigger instanceof RestApiTrigger) {
-        const restApi = RestApiFactory.getAwsInstance(scope, id);
-        const lambdaIntegration = new apiGateway.LambdaIntegration(
-          this.handler,
-          {
-            requestTemplates: { "application/json": '{ "statusCode": "200" }' },
-          }
-        );
-        const pathResource =
-          restApi.awsRestApiGatewayConstruct.createResourcesFor(
-            serverlessFunction.trigger.path
-          );
-        pathResource.addMethod(
-          serverlessFunction.trigger.method,
-          lambdaIntegration
-        );
-      }
-    }
-  }
-}
-
-export class GrailStack extends cdk.Stack {
-  public app: cdk.App;
-  constructor(id: string, resources: any, props?: cdk.StackProps) {
-    const app = new cdk.App();
-    super(app, id, props);
-
-    for (const resource of resources) {
-      if (resource instanceof ServerlessFunction) {
-        new LambdaHandler(this, id, resource);
-      }
+    if (cloudProvider === CloudProviders.AWS) {
+      new AwsGrailStack(stackName, resources, props);
+    } else {
+      console.log("Other cloud providers are not implemented");
     }
   }
 }

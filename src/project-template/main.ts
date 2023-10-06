@@ -1,8 +1,14 @@
-import { GrailStack, RestApiTrigger, ServerlessFunction } from "ts-grail";
+import {
+  GrailStack,
+  RestApiTrigger,
+  ServerlessFunction,
+  CloudProviders,
+  HttpMethods,
+} from "ts-grail";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 class GetProducts extends ServerlessFunction {
-  trigger = new RestApiTrigger("/some-endpoint", "GET");
+  trigger = new RestApiTrigger("/some-endpoint", HttpMethods.GET);
   handler = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -18,4 +24,4 @@ class GetProducts extends ServerlessFunction {
 
 export const resources = [new GetProducts()];
 
-new GrailStack("GrailStack", resources, {});
+new GrailStack("GrailStack", CloudProviders.AWS, resources, {});
