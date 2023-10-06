@@ -1,6 +1,6 @@
 {
   "name": "ts-grail",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Micro framework for building simple serverless applications fast",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
