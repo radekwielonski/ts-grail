@@ -12,6 +12,12 @@ export enum HttpMethods {
   PATCH = "PATCH",
 }
 
+export interface RestResponse {
+  statusCode: number;
+  headers?: { [header: string]: boolean | number | string } | undefined;
+  body: string;
+}
+
 export class RestApiTrigger {
   /**
    * Defines relative path of the endpoint e.g '/products'
