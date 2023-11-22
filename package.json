@@ -1,6 +1,6 @@
 {
   "name": "ts-grail",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "description": "Micro framework for building simple serverless applications fast",
   "homepage": "https://github.com/radekwielonski/ts-grail",
   "main": "dist/index.js",

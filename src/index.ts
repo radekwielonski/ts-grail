@@ -6,3 +6,4 @@ export {
   HttpMethods,
   RestResponse,
 } from "./ts-grail";
+export * from "./http-errors";

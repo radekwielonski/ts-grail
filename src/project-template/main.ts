@@ -5,7 +5,6 @@ import {
   CloudProviders,
   HttpMethods,
 } from "ts-grail";
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 class GetProducts extends ServerlessFunction {
   // Specyfing the type of trigger and it's properties
@@ -14,18 +13,11 @@ class GetProducts extends ServerlessFunction {
   // environment variables
   environment = { key: "value" };
 
-  // Defining the logic
-  handler = async (
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> => {
-    console.log("ts-grail log!");
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: "Hello from ts-grail!",
-      }),
-    };
-  };
+  // Name of folder containing the handler file
+  folderName = "functions";
+
+  // Name of file with the logic and the handler name
+  handlerName = "handler.handler";
 }
 
 // gathering all resources

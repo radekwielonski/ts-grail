@@ -79,10 +79,10 @@ class LambdaHandler extends Construct {
       {
         functionName: `${id}-${serverlessFunction.constructor.name}`,
         runtime: lambda.Runtime.NODEJS_18_X,
-        code: lambda.Code.fromInline(
-          `exports.handler = ${serverlessFunction.handler.toString()}`
+        code: lambda.Code.fromAsset(
+          serverlessFunction.folderName || "functions"
         ),
-        handler: "index.handler",
+        handler: serverlessFunction.handlerName,
       }
     );
     if (serverlessFunction.environment) {

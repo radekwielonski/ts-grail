@@ -43,9 +43,13 @@ export abstract class ServerlessFunction {
    */
   abstract trigger: RestApiTrigger; // To be extended by other services
   /**
-   * Definition of the function, the main logic
+   * Name of the folder containing the handler file
    */
-  abstract handler: Function;
+  abstract folderName?: string;
+  /**
+   * Name of the handler file
+   */
+  abstract handlerName: string;
 }
 
 /**

@@ -19,18 +19,11 @@ class GetProducts extends ServerlessFunction {
   // environment variables
   environment = { key: "value" };
 
-  // Defining the logic
-  handler = async (
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> => {
-    console.log("ts-grail log!");
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: "Hello from ts-grail!",
-      }),
-    };
-  };
+  // Name of folder containing the handler file
+  folderName = "functions";
+
+  // Name of file with the logic
+  handlerName = "handler";
 }
 
 // gathering all resources
